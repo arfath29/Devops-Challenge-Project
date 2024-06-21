@@ -1,4 +1,4 @@
-          # React Todo App
+# React Todo App
 ## Part 1: Create a sudo user in Ubuntu
 ### Step-1:Create a new user called "DevOps":
 ```bash
