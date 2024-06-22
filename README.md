@@ -57,8 +57,8 @@ sudo mkdir -p /opt/deployment/react
 sudo mv build/* /opt/deployment/react/
 ```
 ### Step 5: Deploy the project using pm2
-```bash
 Install pm2 globally:
+```bash
 sudo npm install -g pm2
 ```
 
