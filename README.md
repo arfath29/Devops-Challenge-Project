@@ -249,8 +249,7 @@ sudo nano /opt/checkout/react-todo-app/docker-compose.yml
 ### 3.Add the following content to the docker-compose.yml:
 
 ```yaml
-yaml
-Copy code
+
 version: '3'
 services:
   react-todo-app:
