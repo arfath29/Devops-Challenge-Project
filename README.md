@@ -71,6 +71,7 @@ sudo npm install -g pm2
 cd /opt/deployment/react
 pm2 serve /opt/deployment/react 3000 --name react-todo-app
 ```
+![Alt Text](https://github.com/arfath29/Devops-Challlenge-Project/blob/master/screenshots/Screenshot_19-6-2024_194148_ap-south-1.console.aws.amazon.com.jpeg)
 ## Part 3: Serve the Project
 ### Step 1: Setup Nginx proxy
 
@@ -106,9 +107,7 @@ sudo systemctl restart nginx
 ### Step 2: Access the application
 Open your browser and navigate to:
 http://<your-server-ip>
-
-
-
+![Alt Text](https://github.com/arfath29/Devops-Challlenge-Project/blob/master/screenshots/Screenshot_21-6-2024_18314_13.232.189.51.jpeg)
 ### Step 3: Block unnecessary ports using UFW
 
 ### Allow necessary ports:
@@ -118,7 +117,7 @@ sudo ufw allow 443/tcp
 sudo ufw allow 3000/tcp
 sudo ufw allow 22/tcp
 ```
-
+![Alt Text](https://github.com/arfath29/Devops-Challlenge-Project/blob/master/screenshots/Screenshot_21-6-2024_183230_ap-south-1.console.aws.amazon.com.jpeg)
 ### Enable UFW:
 ```bash
 sudo ufw enable
@@ -289,6 +288,7 @@ cd /opt/checkout/react-todo-app
 ```bash
 docker build -t react-todo-app .
 ```
+![Alt Text](https://github.com/arfath29/Devops-Challlenge-Project/blob/master/screenshots/Screenshot_27-6-2024_142555_ap-south-1.console.aws.amazon.com.jpeg)
 ### Run the Docker container:
 ```bash
 docker run -p 3000:3000 react-todo-app
@@ -298,3 +298,4 @@ docker run -p 3000:3000 react-todo-app
 sudo docker-compose build
 sudo docker-compose up -d
 ```
+![Alt Text](https://github.com/arfath29/Devops-Challlenge-Project/blob/master/screenshots/Screenshot_27-6-2024_143443_ap-south-1.console.aws.amazon.com.jpeg)
