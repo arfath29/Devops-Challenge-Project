@@ -1,4 +1,8 @@
+<<<<<<< HEAD
             # React Todo App
+=======
+# React Todo App
+>>>>>>> 7a1a096c1d1d56df20ee336be40d146435e58743
 ## Part 1: Create a sudo user in Ubuntu
 ### Step-1:Create a new user called "DevOps":
 ```bash
@@ -124,12 +128,16 @@ sudo ufw status
 ### Step 1: Setup Jenkins
 ### Install Jenkins:
 ```bash
+sudo apt install openjdk-17-jdk -y
+```
+```bash
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
 ```
 ```bash
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ |  sudo  tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 ```
 ```bash
+sudo apt update
 sudo apt install jenkins
 ```
 ```bash
@@ -204,22 +212,16 @@ sudo nano /opt/scripts/install_java.sh
 ### 2.Add the following script content:
 ```bash
 #!/bin/bash
-LOG_FILE="/opt/logs/script_logs.log"
-exec > >(tee -i $LOG_FILE)
-exec 2>&1
+echo "$(date) - Downloading OpenJDK 1.8" | tee -a /opt/logs/script_logs.log
+sudo apt update | tee -a /opt/logs/script_logs.log
+sudo apt install openjdk-8-jdk -y | tee -a /opt/logs/script_logs.log
 
-echo "$(date) - Starting Java Installation"
+echo "$(date) - Setting JAVA_HOME and updating PATH" | tee -a /opt/logs/script_logs.log
+echo "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))" | sudo tee -a /etc/profile
+echo "export PATH=$PATH:$JAVA_HOME/bin" | sudo tee -a /etc/profile
 
-echo "$(date) - Downloading OpenJDK 1.8"
-sudo apt update
-sudo apt install openjdk-8-jdk -y
+echo "$(date) - Java installation and setup complete" | tee -a /opt/logs/script_logs.log
 
-echo "$(date) - Setting up Java environment variables"
-echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
-echo "export PATH=\$PATH:\$JAVA_HOME/bin" >> ~/.bashrc
-source ~/.bashrc
-
-echo "$(date) - Java Installation Completed"
 ```
 ### 3.Make the script executable and run it:
 ```bash
@@ -234,31 +236,65 @@ sudo nano /opt/checkout/react-todo-app/Dockerfile
 ```
 ### 2.Add the following content to the Dockerfile:
 
-Dockerfile
+### Dockerfile
 
 ```bash
-FROM nginx:alpine
-COPY build /usr/share/nginx/html
+# Use an official Node.js runtime as a parent image
+FROM node:14-alpine
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json to the working directory
+COPY /opt/checkout/react-todo-app/package*.json ./
+
+# Install the dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
+COPY /opt/checkout/react-todo-app .
+
+# Build the React app
+RUN npm run build
+
+# Install serve to serve the build folder
+RUN npm install -g serve
+
+# Expose the port the app runs on
 EXPOSE 3000
-Create a docker-compose.yml:
+
+# Serve the build folder on port 3000
+CMD ["serve", "-s", "build"]
 ```
 
+### Create a docker-compose.yml:
 ```bash
 sudo nano /opt/checkout/react-todo-app/docker-compose.yml
 ```
 ### 3.Add the following content to the docker-compose.yml:
 
 ```yaml
-yaml
-Copy code
 version: '3'
 services:
   react-todo-app:
     build: .
     ports:
-      - "3000:80"
+      - "3000:3000"
 ```
 ### 4.Build and run the Docker container:
 ```bash
 cd /opt/checkout/react-todo-app
+```
+### Build the Docker image:
+```bash
+docker build -t react-todo-app .
+```
+### Run the Docker container:
+```bash
+docker run -p 3000:3000 react-todo-app
+```
+### Build and run the containers using Docker Compose:
+```bash
+sudo docker-compose build
+sudo docker-compose up -d
 ```
